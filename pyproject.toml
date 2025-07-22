@@ -1,0 +1,16 @@
+[project]
+name = "api-ppt-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ddgs>=9.2.3",
+    "duckduckgo-search>=8.1.1",
+    "langchain-community>=0.3.27",
+    "loguru>=0.7.3",
+    "markdownify>=1.1.0",
+    "openai>=1.97.0",
+    "python-dotenv>=1.0.0",
+    "smolagents>=1.20.0",
+]
