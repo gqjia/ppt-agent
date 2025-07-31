@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-from smolagents import WebSearchTool, ToolCallingAgent
+from smolagents import ToolCallingAgent
+# from smolagents import WebSearchTool
 from phoenix.otel import register
 from openinference.instrumentation.smolagents import SmolagentsInstrumentor
 
 from ..utils import load_prompt, model
 from ..tools.file_tool import FileSaveTool
+from ..tools.bocha_websearch import BochaWebSearch
 
 
 register()
@@ -14,7 +16,7 @@ SmolagentsInstrumentor().instrument()
 outline_generate_prompt = load_prompt("outline_generate.yaml")
 
 outline_generate_agent = ToolCallingAgent(
-    tools=[WebSearchTool(), FileSaveTool()],
+    tools=[BochaWebSearch(), FileSaveTool(default_output_dir="tmp/")],
     model=model,
     name="outline_generate_agent",
     description="This is an agent that can generate PPT outline.",  
@@ -22,7 +24,3 @@ outline_generate_agent = ToolCallingAgent(
     planning_interval=3,
     return_full_result=True,
 )
-
-
-if __name__ == "__main__":
-    outline_generate_agent.run(task="生成一个关于“中国苏超比赛”的PPT大纲")

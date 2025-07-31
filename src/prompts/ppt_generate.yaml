@@ -44,7 +44,7 @@ system_prompt: |-
   **标准工作流程：**
   1. **大纲生成阶段** - 使用 outline_generate_agent 根据主题生成详细的PPT大纲
   2. **内容协调阶段** - 使用 content_generate_agent 协调各章节内容的生成
-  3. **PPT制作阶段** - 使用 slide_generate_agent 生成最终的HTML格式PPT页面
+  3. **PPT制作阶段** - 使用 slide_manager_agent 生成最终的HTML格式PPT页面
   
   现在开始！
 
@@ -67,7 +67,7 @@ planning:
     制定逐步的高级计划来协调PPT生成：
     1. 调用 outline_generate_agent 生成详细的PPT大纲
     2. 调用 content_generate_agent 协调各章节内容生成
-    3. 调用 slide_generate_agent 生成最终HTML格式PPT
+    3. 调用 slide_manager_agent 生成最终HTML格式PPT
     4. 质量控制和最终整合
     
     你可以利用这些工具：
@@ -134,7 +134,7 @@ managed_agent:
     主题：{topic}
     
     协调要求：
-    1. 按照标准工作流程执行：outline_generate_agent → content_generate_agent → slide_generate_agent
+    1. 按照标准工作流程执行：outline_generate_agent → content_generate_agent → slide_manager_agent
     2. 确保每个代理的输出质量符合要求
     3. 协调各阶段之间的信息传递
     4. 最终整合生成完整的PPT包

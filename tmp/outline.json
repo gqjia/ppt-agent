@@ -1,0 +1,55 @@
+{
+  "title": "DOTA2 雪如意比赛",
+  "sections": [
+    {
+      "id": 1,
+      "title": "赛事背景介绍",
+      "description": "介绍DOTA2雪如意比赛的背景和意义",
+      "key_points": [
+        "第二届雪如意･超维视界 DOTA2 大师赛由淘宝百亿补贴独家冠名赞助",
+        "在张家口经开区举行，线下阶段场地从崇礼区移师经开区",
+        "10支国内外顶尖战队参赛"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "比赛赛制与日程",
+      "description": "解析比赛赛制和日程安排",
+      "key_points": [
+        "小组赛和淘汰赛阶段",
+        "XG战队表现不佳，连续1-2落败",
+        "Tidebound战队表现亮眼"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "参赛战队与选手",
+      "description": "介绍参赛战队和明星选手",
+      "key_points": [
+        "国内外顶尖战队如Nigma、Tundra、Spirit等",
+        "中国战队XG的表现分析",
+        "明星选手Collapse获得赛事MVP"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "精彩瞬间回顾",
+      "description": "回顾比赛中的精彩瞬间",
+      "key_points": [
+        "Tidebound的出色表现",
+        "XG与YB的失利分析",
+        "Spirit战队3:0横扫Falcons夺冠"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "赛事影响与展望",
+      "description": "总结赛事影响和未来展望",
+      "key_points": [
+        "对DOTA2电竞生态的推动作用",
+        "冰雪运动与电竞结合的创新",
+        "未来赛事规划与期待"
+      ]
+    }
+  ]
+}

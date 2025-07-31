@@ -17,6 +17,6 @@ logger.add(
 
 
 if __name__ == "__main__":
-    # ui = GradioUI(ppt_generate_agent)
-    # ui.launch(pwa=True)
-    ppt_generate_agent.run(task="生成一个关于“苏超比赛”的PPT")
+    ui = GradioUI(ppt_generate_agent)
+    ui.launch(pwa=True)
+    # ppt_generate_agent.run(task="生成一个关于“苏超比赛”的PPT")
