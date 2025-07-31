@@ -46,3 +46,5 @@ Thumbs.db
 .data/
 .gradio/
 .vercel/
+.logs/
+.tmp/
