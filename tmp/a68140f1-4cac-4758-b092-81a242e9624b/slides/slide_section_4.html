@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单页面HTML PPT</title>
+    <link href="https://cdn.tailwindcss.com/" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+        }
+        .ppt-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .ppt-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .ppt-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .ppt-content {
+            line-height: 1.6;
+            color: #555;
+        }
+        .ppt-icon {
+            font-size: 2rem;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+<div class="ppt-container">
+    <div class="ppt-title">单页面HTML PPT示例</div>
+    <div class="ppt-subtitle">基于提供的内容自动生成</div>
+    <div class="ppt-content">
+        <p>由于未能成功读取章节内容文件，以下是示例内容：</p>
+        <p><i class="ppt-icon fas fa-exclamation-triangle"></i> 提示：请检查文件路径或重新上传文件。</p>
+        <p>如果您有具体的章节内容，请上传相应的Markdown文件以生成更精确的PPT。</p>
+    </div>
+</div>
+</body>
+</html>

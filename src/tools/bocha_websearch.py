@@ -1,12 +1,19 @@
 """博查 AI 网页检索工具
 提供基于博查 AI API 的网页搜索功能
 """
-
+import os
 import requests
 import json
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Any
 from loguru import logger
 from smolagents import Tool
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+BOCHA_API_KEY = os.getenv('BOCHA_API_KEY')
+BOCHA_API_URL = os.getenv('BOCHA_API_URL')
 
 
 class BochaWebSearch(Tool):
@@ -18,24 +25,14 @@ class BochaWebSearch(Tool):
         "query": {
             "type": "string",
             "description": "搜索查询字符串，描述您要搜索的内容"
-        },
-        "freshness": {
-            "type": "string",
-            "description": "搜索结果时效性，可选值：'noLimit'(无限制)、'day'(最近一天)、'week'(最近一周)、'month'(最近一个月)、'year'(最近一年)",
-            "nullable": True
-        },
-        "max_results": {
-            "type": "integer",
-            "description": "返回的最大搜索结果数量",
-            "nullable": True
         }
     }
     output_type = "string"
     
     def __init__(
         self, 
-        api_key: str = "sk-4e6c8204a7af403d81700379f2a9423d", 
-        base_url: str = "https://api.bochaai.com/v1"
+        api_key: str = BOCHA_API_KEY, 
+        base_url: str = BOCHA_API_URL
     ):
         """
         初始化博查 AI 网页检索工具
@@ -45,13 +42,6 @@ class BochaWebSearch(Tool):
             base_url: API 基础 URL
         """
         super().__init__()
-        
-        # 如果没有提供 API 密钥，尝试从环境变量获取
-        if api_key is None:
-            import os
-            api_key = os.getenv('BOCHA_API_KEY')
-            if not api_key:
-                logger.warning("未提供 BOCHA_API_KEY，请设置环境变量或在初始化时提供")
         
         self.api_key = api_key
         self.base_url = base_url
@@ -65,18 +55,19 @@ class BochaWebSearch(Tool):
         else:
             self.headers = None
     
-    def forward(self, query: str, freshness: str = "noLimit", max_results: int = 5) -> str:
+    def forward(self, query: str) -> str:
         """
         执行网页搜索并返回格式化的结果
         
         Args:
             query: 搜索查询字符串
-            freshness: 搜索结果时效性
-            max_results: 最大结果数量
             
         Returns:
             格式化的搜索结果字符串
         """
+        freshness = "noLimit"
+        max_results = 5
+        
         if not self.api_key or not self.headers:
             return "错误：未设置 BOCHA_API_KEY，请设置环境变量或在初始化时提供 API 密钥"
         
@@ -185,7 +176,7 @@ class BochaWebSearch(Tool):
     def _parse_bocha_response(self, response: Dict[str, Any]) -> List[Dict[str, str]]:
         """
         解析博查 AI 的响应格式
-        
+
         Args:
             response: 博查 AI 的原始响应
             
@@ -306,28 +297,3 @@ def create_bocha_search_tool(api_key: str) -> BochaWebSearch:
         BochaWebSearch 实例
     """
     return BochaWebSearch(api_key)
-
-
-# 示例用法
-if __name__ == "__main__":
-    # 示例代码
-    api_key = "sk-xxxxxxxx"  # 替换为实际的 API 密钥
-    
-    # 创建搜索工具
-    search_tool = create_bocha_search_tool(api_key)
-    
-    try:
-        # 执行搜索
-        query = "西瓜的功效与作用"
-        results = search_tool.search_simple(query)
-        
-        print(f"搜索查询: {query}")
-        print(f"找到 {len(results)} 条结果:")
-        
-        for result in results:
-            print(f"\n{result['rank']}. {result['title']}")
-            print(f"   URL: {result['url']}")
-            print(f"   摘要: {result['snippet']}")
-    
-    except Exception as e:
-        print(f"搜索失败: {str(e)}")

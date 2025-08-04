@@ -26,21 +26,24 @@ class FileReadTool(Tool):
     name = "file_read"
     description = "读取指定路径的文件内容并返回文件内容字符串。支持文本文件、JSON、YAML等格式。"
     inputs = {
-        "file_path": {
+        "file_name": {
             "type": "string", 
-            "description": "要读取的文件路径，可以是相对路径或绝对路径"
+            "description": "要读取的文件名"
         }
     }
     output_type = "string"
     
-    def __init__(self, max_file_size: int = 1024*1024, encoding: str = "utf-8"):
+    def __init__(self, max_file_size: int = 1024*1024, encoding: str = "utf-8", work_path: str = None):
         super().__init__()
         self.max_file_size = max_file_size
         self.encoding = encoding
+        self.work_path = work_path
     
-    def forward(self, file_path: str) -> str:
-        logger.info(f"开始读取文件: {file_path}")
+    def forward(self, file_name: str) -> str:
+        logger.info(f"开始读取文件: {file_name}")
         
+        file_path = os.path.join(self.work_path, file_name)
+
         try:
             # 检查文件是否存在
             if not os.path.exists(file_path):
@@ -124,38 +127,31 @@ class FileSaveTool(Tool):
         "file_name": {
             "type": "string",
             "description": "要保存的文件名"
-        },
-        "file_path": {
-            "type": "string",
-            "description": "要保存的文件路径，可以是相对路径或绝对路径。如果不提供，将自动生成tmp/[随机数字].json格式的文件名",
-            "nullable": True
         }
     }
     output_type = "string"
     
-    def __init__(self, auto_create_dirs: bool = True, backup_existing: bool = False, encoding: str = "utf-8", default_output_dir: str = None):
+    def __init__(self, auto_create_dirs: bool = True, backup_existing: bool = False, encoding: str = "utf-8", work_path: str = None):
         super().__init__()
         self.auto_create_dirs = auto_create_dirs
         self.backup_existing = backup_existing
         self.encoding = encoding
-        self.default_output_dir = default_output_dir
+        self.work_path = work_path
     
     def forward(
         self, 
         content: str, 
         file_name: str,
-        file_path: str = None,
     ) -> str:
         # 如果没有提供文件路径，使用默认输出目录或自动生成
-        if file_path is None:
-            if self.default_output_dir:
-                file_path = self.default_output_dir
-                # 确保默认输出目录存在
-                if self.auto_create_dirs:
-                    os.makedirs(file_path, exist_ok=True)
-            else:
-                file_path = f"tmp_{uuid.uuid4().hex[:8]}"
+        if self.work_path:
+            file_path = self.work_path
+            # 确保默认输出目录存在
+            if self.auto_create_dirs:
                 os.makedirs(file_path, exist_ok=True)
+        else:
+            file_path = f"tmp_{uuid.uuid4().hex[:8]}"
+            os.makedirs(file_path, exist_ok=True)
         
         # 构建完整的文件路径
         full_file_path = os.path.join(file_path, file_name)
@@ -196,144 +192,14 @@ class FileSaveTool(Tool):
             file_size = os.path.getsize(full_file_path)
             logger.success(f"文件保存成功: {full_file_path}, 文件大小: {file_size} 字节")
             
-            return f"## 文件保存成功\n\n**文件路径:** {full_file_path}\n**文件大小:** {file_size} 字节\n**内容长度:** {len(content)} 字符{backup_info}"
+            return f"## 文件保存成功\n\n**文件名:** {file_name}\n**文件大小:** {file_size} 字节\n**内容长度:** {len(content)} 字符{backup_info}"
             
         except PermissionError as e:
-            logger.error(f"权限不足，无法写入文件: {full_file_path}, 错误: {e}")
-            return f"错误：没有权限写入文件 - {full_file_path}"
+            logger.error(f"权限不足，无法写入文件: {file_name}, 错误: {e}")
+            return f"错误：没有权限写入文件 - {file_name}"
         except OSError as e:
-            logger.error(f"无法创建目录或文件: {full_file_path}, 错误: {e}")
+            logger.error(f"无法创建目录或文件: {file_name}, 错误: {e}")
             return f"错误：无法创建目录或文件 - {str(e)}"
         except Exception as e:
-            logger.error(f"保存文件时发生未知异常: {full_file_path}, 错误: {e}")
+            logger.error(f"保存文件时发生未知异常: {file_name}, 错误: {e}")
             return f"错误：保存文件时发生异常 - {str(e)}"
-
-
-class FileListTool(Tool):
-    """文件列表工具，用于列出指定目录下的文件和子目录。
-    
-    支持递归列出子目录内容，可过滤文件类型。
-    
-    Args:
-        max_depth (int, default 3): 最大递归深度
-        show_hidden (bool, default False): 是否显示隐藏文件
-        
-    Examples:
-        ```python
-        >>> from src.tools.file_tool import FileListTool
-        >>> file_lister = FileListTool(max_depth=2, show_hidden=True)
-        >>> files = file_lister("./src")
-        >>> print(files)
-        ```
-    """
-    
-    name = "file_list"
-    description = "列出指定目录下的文件和子目录，支持递归列出和文件过滤。"
-    inputs = {
-        "directory_path": {
-            "type": "string",
-            "description": "要列出内容的目录路径"
-        },
-        "recursive": {
-            "type": "boolean",
-            "description": "是否递归列出子目录内容，默认为False",
-            "nullable": True
-        }
-    }
-    output_type = "string"
-    
-    def __init__(self, max_depth: int = 3, show_hidden: bool = False):
-        super().__init__()
-        self.max_depth = max_depth
-        self.show_hidden = show_hidden
-    
-    def forward(self, directory_path: str, recursive: bool = False) -> str:
-        logger.info(f"开始列出目录内容: {directory_path}, 递归模式: {recursive}")
-        
-        try:
-            # 检查目录是否存在
-            if not os.path.exists(directory_path):
-                logger.error(f"目录不存在: {directory_path}")
-                return f"错误：目录不存在 - {directory_path}"
-            
-            # 检查是否为目录
-            if not os.path.isdir(directory_path):
-                logger.error(f"指定路径不是目录: {directory_path}")
-                return f"错误：指定路径不是目录 - {directory_path}"
-            
-            result = f"## 目录内容列表\n\n**目录路径:** {directory_path}\n\n"
-            
-            if recursive:
-                logger.debug(f"使用递归模式列出目录，最大深度: {self.max_depth}")
-                content = self._list_recursive(directory_path, 0)
-            else:
-                logger.debug("使用单层模式列出目录")
-                content = self._list_single_level(directory_path)
-            
-            result += content
-            logger.success(f"目录列出完成: {directory_path}")
-            return result
-            
-        except PermissionError as e:
-            logger.error(f"权限不足，无法访问目录: {directory_path}, 错误: {e}")
-            return f"错误：没有权限访问目录 - {directory_path}"
-        except Exception as e:
-            logger.error(f"列出目录内容时发生未知异常: {directory_path}, 错误: {e}")
-            return f"错误：列出目录内容时发生异常 - {str(e)}"
-    
-    def _list_single_level(self, directory_path: str) -> str:
-        items = []
-        try:
-            dir_items = os.listdir(directory_path)
-            logger.debug(f"目录 {directory_path} 包含 {len(dir_items)} 个项目")
-            
-            for item in sorted(dir_items):
-                if not self.show_hidden and item.startswith('.'):
-                    continue
-                
-                item_path = os.path.join(directory_path, item)
-                if os.path.isdir(item_path):
-                    items.append(f"📁 {item}/")
-                else:
-                    file_size = os.path.getsize(item_path)
-                    items.append(f"📄 {item} ({file_size} 字节)")
-            
-            logger.debug(f"过滤后显示 {len(items)} 个项目")
-            return "\n".join(items) if items else "目录为空"
-            
-        except Exception as e:
-            logger.error(f"无法读取目录内容: {directory_path}, 错误: {e}")
-            return f"错误：无法读取目录内容 - {str(e)}"
-    
-    def _list_recursive(self, directory_path: str, current_depth: int) -> str:
-        if current_depth >= self.max_depth:
-            logger.debug(f"达到最大递归深度 {self.max_depth}，停止递归: {directory_path}")
-            return ""
-        
-        items = []
-        indent = "  " * current_depth
-        
-        try:
-            dir_items = os.listdir(directory_path)
-            logger.debug(f"递归处理目录 {directory_path} (深度 {current_depth})，包含 {len(dir_items)} 个项目")
-            
-            for item in sorted(dir_items):
-                if not self.show_hidden and item.startswith('.'):
-                    continue
-                
-                item_path = os.path.join(directory_path, item)
-                if os.path.isdir(item_path):
-                    items.append(f"{indent}📁 {item}/")
-                    if current_depth < self.max_depth - 1:
-                        sub_items = self._list_recursive(item_path, current_depth + 1)
-                        if sub_items:
-                            items.append(sub_items)
-                else:
-                    file_size = os.path.getsize(item_path)
-                    items.append(f"{indent}📄 {item} ({file_size} 字节)")
-
-            return "\n".join(items)
-
-        except Exception as e:
-            logger.error(f"递归读取目录内容失败: {directory_path}, 深度: {current_depth}, 错误: {e}")
-            return f"{indent}错误：无法读取目录内容 - {str(e)}"

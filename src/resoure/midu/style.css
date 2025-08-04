@@ -1,0 +1,338 @@
+/* 通用样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 幻灯片1 - 标题页样式 */
+ .slide_logo {
+    position: absolute;
+    top: 30px;
+    right: 5%;
+    width: 10%;
+}
+.top-block {
+    height: 30vh;
+}
+.slide_home {
+    /* 设置背景图 */
+    background-image: url('./images/page1_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 80px;
+    color: white;
+}
+
+.slide_home .top-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.slide_home .main-title {
+    font-size: 4.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    line-height: 1.2;
+}
+
+.slide_home .subtitle {
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    line-height: 1.3;
+}
+
+.slide_home .speaker {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.slide_home .bottom-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.slide_home .website {
+    font-size: 1.2rem;
+}
+
+.slide_home .copyright {
+    font-size: 0.9rem;
+    text-align: center;
+    flex: 1;
+}
+
+.slide_home .design-element {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    width: 10%;
+    /* height: 8px; */
+}
+
+/* 幻灯片2 - 目录页样式 */
+.slide_contents {
+    background-image: url('./images/page2_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 80px;
+    color: #333;
+    position: relative;
+}
+
+.slide_contents .header {
+    margin-bottom: 60px;
+    position: relative;
+}
+
+.slide_contents .title-container {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.slide_contents .main-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.slide_contents .subtitle {
+    font-size: 2.5rem;
+    color: #3377FF;
+}
+
+.slide_contents .divider {
+    height: 2px;
+    background-color: #ddd;
+    width: 100%;
+}
+
+.slide_contents .content-sections {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex: 1;
+}
+
+.slide_contents .content-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.slide_contents .icon {
+    width: 60px;
+    height: 60px;
+    background-color: #3377FF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.slide_contents .block-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.slide_contents .placeholder-text {
+    font-size: 1.1rem;
+    color: #888888;
+}
+
+/* 幻灯片3 - 工作完成情况页样式 */
+.slide_summary {
+    background-color: #EBF2F8;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 60px;
+    color: #333;
+}
+
+.slide_summary .page-title {
+    font-size: 2.4rem;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 30px;
+    color: #333;
+}
+.slide_summary .page-title-icon {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+     background-image: url('./images/title_sub_icon.png');
+    background-size: cover;
+    background-position: center;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.slide_summary .cards-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex: 1;
+}
+
+.slide_summary .card {
+    flex: 1;
+    background: white;
+    border-radius: 12px;
+    padding: 40px 30px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.slide_summary .card-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #3377FF;
+}
+
+.slide_summary .card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.slide_summary .list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+.slide_summary .bullet {
+    width: 6px;
+    height: 6px;
+    background-color: #333;
+    border-radius: 50%;
+    margin-top: 8px;
+    flex-shrink: 0;
+}
+
+.slide_summary .item-text {
+    flex: 1;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .slide_home .main-title {
+        font-size: 3.5rem;
+    }
+    .slide_home .subtitle {
+        font-size: 1.8rem;
+    }
+    .slide_home .speaker {
+        font-size: 1.5rem;
+    }
+    
+    .slide_contents .main-title {
+        font-size: 2.8rem;
+    }
+    .slide_contents .subtitle {
+        font-size: 2rem;
+    }
+    .slide_contents .block-title {
+        font-size: 1.6rem;
+    }
+    
+    .slide_summary .page-title {
+        font-size: 2.2rem;
+    }
+    .slide_summary .card-title {
+        font-size: 1.5rem;
+    }
+    .slide_summary .list-item {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .slide_home {
+        padding: 40px 30px;
+    }
+    .slide_home .main-title {
+        font-size: 2.5rem;
+    }
+    .slide_home .subtitle {
+        font-size: 1.4rem;
+    }
+    .slide_home .speaker {
+        font-size: 1.2rem;
+    }
+    
+    .slide_contents {
+        padding: 40px 30px;
+    }
+    .slide_contents .content-sections {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .slide_contents .main-title {
+        font-size: 2.2rem;
+    }
+    .slide_contents .subtitle {
+        font-size: 1.6rem;
+    }
+    .slide_contents .block-title {
+        font-size: 1.4rem;
+    }
+    
+    .slide_summary {
+        padding: 30px 20px;
+    }
+    .slide_summary .cards-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .slide_summary .page-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+    .slide_summary .card {
+        padding: 30px 20px;
+    }
+    .slide_summary .card-title {
+        font-size: 1.3rem;
+    }
+    .slide_summary .list-item {
+        font-size: 0.85rem;
+    }
+} 

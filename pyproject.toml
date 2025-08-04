@@ -8,6 +8,7 @@ dependencies = [
     "ddgs>=9.2.3",
     "duckduckgo-search>=8.1.1",
     "gradio>=5.38.0",
+    "json-repair>=0.48.0",
     "langchain-community>=0.3.27",
     "loguru>=0.7.3",
     "markdownify>=1.1.0",
