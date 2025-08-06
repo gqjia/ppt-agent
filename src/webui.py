@@ -1,8 +1,4 @@
 import gradio as gr
-import os
-import shutil
-import re
-from pathlib import Path
 from smolagents import stream_to_gradio, MessageRole
 from phoenix.otel import register
 from openinference.instrumentation.smolagents import SmolagentsInstrumentor
@@ -25,7 +21,7 @@ class PPTGeneratorUI:
         self.description = "基于AI的智能PPT生成工具，支持主题输入和内容生成"
 
     def interact_with_agent(self, prompt, messages, session_state):
-        """与agent交互的核心方法"""
+        """与 agent 交互的核心方法"""
         if "agent" not in session_state:
             session_state["agent"] = self.agent
 
